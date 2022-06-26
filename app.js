@@ -1,21 +1,28 @@
-// const airport_code = '';
-// const airport_name = '';
+const prompt = require('prompt-sync')();
 
-// function askQuestion(question) {
-//     const readline = require('readline');
-//     const rl = readline.createInterface({
-//         input: process.stdin,
-//         output: process.stdout
-//     });
+const search = prompt('Press 1 for search with airport code, 2 for search with airport name: ');
 
-//     return new Promise(resolve => rl.question(question, answer => {
-//         rl.close();
-//         resolve(answer);
-//     }));
-// }
+if (search == 1) {
+    const originAirportCode = prompt('Enter origin airport code: ');
+    console.log(`origin airport code: ${originAirportCode}`);
 
-// const ans = await askQuestion('What is the airport code? ');
+    const destinationAirportCode = prompt('Enter destination airport code: ');
+    console.log(`destination airport code: ${destinationAirportCode}`);
+} else if (search == 2) {
+    const originAirportName = prompt('Enter irigin airport name: ');
+    console.log(`origin airport name: ${originAirportName}`);
 
+    const destinationAirportName = prompt('Enter destination airport name: ');
+    console.log(`destination airport name: ${destinationAirportName}`);
+} else {
+    console.log('God is a woman');
+}
+
+const departureDate = prompt('Enter departure date (dd.mm.yyyy): ');
+console.log(`departure date:  ${departureDate}`);
+
+const returnDate = prompt('Enter return date (dd.mm.yyyy): ');
+console.log(`Return date: ${returnDate}`)
 
 
 const skyscanner_url = 'https://www.skyscanner.de';
