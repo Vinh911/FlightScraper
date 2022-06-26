@@ -87,7 +87,6 @@ function searchSkyscanner(originAirport, destinationAirport, departureDate, retu
     puppeteer.use(StealthPlugin());
     puppeteer.use(AdBlockerPlugin({ blockTrackers: true }));
 
-    console.log(skyscanner_url + originAirport + '/' + destinationAirport + '/' + departureDate + '/' + returnDate);
     puppeteer.launch({ headless: true }).then(async browser => {
         const page = await browser.newPage();
         await page.setViewport({ width: 800, height: 600 })
@@ -97,8 +96,13 @@ function searchSkyscanner(originAirport, destinationAirport, departureDate, retu
         await page.click('#acceptCookieButton');
         console.log('clicked accept cookie button');
 
+        //wait for element to load and take screenshot
+        await page.waitForSelector('.SummaryInfo_itineraryCountContainer__NWFkN', { visible: true });
 
-
+        console.log('fetching results...');
+        await page.waitForTimeout(5000);
+        await page.screenshot({ path: 'screenshot2.png' });
+        console.log('results loaded!');
         await browser.close()
     });
 }
