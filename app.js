@@ -5,45 +5,25 @@ const AdBlockerPlugin = require('puppeteer-extra-plugin-adblocker');
 
 const skyscanner_url = 'https://www.skyscanner.de/transport/fluge/';
 
-let search = '';
-let originAirportCode = '';
-let destinationAirportCode = '';
-let originAirportName = '';
-let destinationAirportName = '';
+let originAirport = '';
+let destinationAirport = '';
 let departureDate = '';
 let returnDate = '';
 
 getUserInput();
-if (search == 1) {
-    searchSkyscanner(originAirportCode, destinationAirportCode, departureDate, returnDate);
-} else if (search == 2) {
-    searchSkyscanner(originAirportName, destinationAirportName, departureDate, returnDate);
-}
+searchSkyscanner(originAirport, destinationAirport, departureDate, returnDate);
 
 function getUserInput() {
-    search = prompt('Press 1 for search with airport code, 2 for search with airport name: ');
-
-    if (search == 1) {
-        originAirportCode = prompt('Enter origin airport code: ');
-        destinationAirportCode = prompt('Enter destination airport code: ');
-    } else if (search == 2) {
-        originAirportName = prompt('Enter irigin airport name: ');
-        destinationAirportName = prompt('Enter destination airport name: ');
-    } else {
-        console.log('God is a woman');
-    }
+    originAirport = prompt('Enter origin airport code: ');
+    destinationAirport = prompt('Enter destination airport code: ');
 
     departureDate = prompt('Enter departure date (dd.mm.yyyy): ');
     returnDate = prompt('Enter return date (dd.mm.yyyy): ');
 
     if (checkDate(departureDate) && checkDate(returnDate) && returnDate > departureDate) {
-        if (search == 1) {
-            console.log('\x1b[32m%s\x1b[0m', 'Origin: ' + originAirportCode + ' Destination: ' + destinationAirportCode + '\nDeparture: ' + departureDate + ' Return: ' + returnDate);
-        } else if (search == 2) {
-            console.log('\x1b[32m%s\x1b[0m', 'Origin: ' + originAirportName + ' Destination: ' + destinationAirportName + '\nDeparture: ' + departureDate + ' Return: ' + returnDate);
-        }
+        console.log('\x1b[32m%s\x1b[0m', 'Origin: ' + originAirport + ' Destination: ' + destinationAirport + '\nDeparture: ' + departureDate + ' Return: ' + returnDate);
     } else {
-        console.log('Invalid date');
+        console.log('Invalid date!');
         process.exit();
     }
 }
@@ -97,6 +77,7 @@ function searchSkyscanner(originAirport, destinationAirport, departureDate, retu
         console.log('clicked accept cookie button');
 
         //wait for element to load and take screenshot
+        await page.setDefaultNavigationTimeout(0);
         await page.waitForSelector('.SummaryInfo_itineraryCountContainer__NWFkN', { visible: true });
 
         console.log('fetching results...');
